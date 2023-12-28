@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BAC</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400&display=swap');
+        body {
+            margin: 0;
+            font-family: 'Noto Sans Bengali', sans-serif;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #E8DEF8;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        strong {
+            margin-right: 10px;
+        }
+
+        span {
+            font-weight: bold;
+        }
+        footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #F3EDF7; /* Change background color as needed */
+}
+
+.button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 16px;
+    margin: 5px;
+    text-decoration: none;
+    color: #333;
+    cursor: pointer;
+    font-size: 10px; /* Reduce this value to make the text smaller */
+    font-weight: bold;
+}
+.button:hover {
+    background-color: #E8DEF8; /* Change to color when hovered */
+    border-radius: 15px;
+}
+
+.button:active {
+    background-color: #E8DEF8; /* Change to color when clicked */
+    border-radius: 15px;
+}
+.button span {
+    margin-top: 2px; /* Adjust this value to move the text up or down */
+}
+
+.button img {
+    width: 15px;
+    height: 15px;
+    display: block;
+    margin: 0 auto;
+}
+/* Optional: Adjustments for better spacing */
+.main-content {
+    margin-top: 20px;
+}
+
+.footer-buttons {
+    display: flex;
+}
+    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+<body>
+
+<div class="container" id="profileContainer">
+    <h2>শিক্ষার্থী প্রোফাইল</h2>
+    <p><strong>নাম:</strong> <span id="name"></span></p>
+    <p><strong>ক্লাস:</strong> <span id="class"></span></p>
+    <p><strong>বিভাগ:</strong> <span id="section"></span></p>
+    <p><strong>মোবাইল নম্বর:</strong> <span id="phone"></span></p>
+</div>
+<footer>
+    <div class="buttons">
+      <a href="profile.html?userId=1001"class="button">
+          <i class="material-symbols-rounded">person</i>
+          <span>শিক্ষার্থী</span>
+      </a>
+  </div>
+  <div class="buttons">
+      <a href="attendance.html?userId=1001"class="button">
+          <i class="material-symbols-rounded">calendar_month</i>
+          <span>উপস্থিতি</span>
+      </a>
+  </div>
+  <div  class="buttons">
+      <a href="fees.html?userId=1001"class="button">
+          <i class="material-symbols-rounded">payments</i>
+          <span>বেতন</span>
+      </a>
+      </a>
+  </div>
+  <div class="buttons">
+      <a class="button">
+          <i class="material-symbols-rounded">award_star</i>
+          <span>ফলাফল</span>
+      </a>
+  </div>
+  </footer>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+<script>
+    // Initialize Firebase
+    const firebaseConfig = {
+            apiKey: "AIzaSyBhDyy-uWtvbZSnQrCFFubX02CwznIPYp8",
+            authDomain: "bac-2012.firebaseapp.com",
+            projectId: "bac-2012",
+            storageBucket: "bac-2012.appspot.com",
+            messagingSenderId: "1080877923320",
+            appId: "1:1080877923320:web:41d0cfb6b3cb7da530740d",
+            measurementId: "G-75BX9SCCLV"
+        };
+    firebase.initializeApp(firebaseConfig);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('userId');
+
+    if (userId) {
+        const db = firebase.firestore();
+        const userRef = db.collection('users').doc(userId);
+
+        userRef.get().then((doc) => {
+            if (doc.exists) {
+                const data = doc.data();
+                document.getElementById('name').innerText = data.name || 'N/A';
+                document.getElementById('class').innerText = data.class || 'N/A';
+                document.getElementById('section').innerText = data.section || 'N/A';
+                document.getElementById('phone').innerText = data.phone || 'N/A';
+            } else {
+                console.error('No such document!');
+            }
+        }).catch((error) => {
+            console.error('Error getting document:', error);
+        });
+    } else {
+        console.error('User ID not provided in the URL.');
+    }
+</script>
+
+</body>
+</html>

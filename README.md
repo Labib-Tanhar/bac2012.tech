@@ -12,6 +12,6 @@ As outlined in the **license**, any usage beyond **personal evaluation and revie
 
 Under the current **restrictive license**, **contributions to the Bhuiyan Academic Care App are not accepted**. For inquiries, please reach out to **Muhammad Labib Tanhar**.
 
-This project is licensed under the **Bhuiyan Academic Care App Restrictive License**. Refer to the [**LICENSE.md**](LICENSE.md) file for **detailed terms**.
+This project is licensed under the **Bhuiyan Academic Care App Restrictive License**. Refer to the [**LICENSE**](LICENSE) file for **detailed terms**.
 
 For inquiries or support, please contact **Muhammad Labib** at **contact@labibtanhar.com**.

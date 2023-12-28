@@ -1,0 +1,5 @@
+﻿{
+  "Description": "Domain ownership verification file for Microsoft 365 - place in the website root",
+  "Domain": "bac2012.tech",
+  "Id": "e9003077-bb56-4899-8bd3-c23b06cdbac7"
+}

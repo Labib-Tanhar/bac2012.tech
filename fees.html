@@ -1,0 +1,365 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BAC</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon"> <!-- Add this line for the favicon -->
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@500&display=swap');
+body {
+  font-family: 'Noto Sans Bengali', sans-serif;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px; /* Adjust this value as needed */
+  color: black; /* Change text color as needed */
+  font-size: 24px; /* Adjust font size as needed */
+}
+
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 20px; /* Adjust this value to add space after scrolling */
+}
+
+.payments, .dues, .others {
+  margin: 20px;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.payments {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #FFEEF4;
+}
+
+.dues {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #FFEFE8;
+}
+
+.others {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #C5FFF8;
+  margin-bottom: 100px;
+}
+
+h2 {
+  margin: 0;
+  padding: 0;
+  font-size: 18px;
+  font-weight: bold;
+
+}
+
+p {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+}
+footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #F3EDF7; /* Change background color as needed */
+}
+
+.button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 16px;
+    margin: 5px;
+    text-decoration: none;
+    color: #333;
+    cursor: pointer;
+    font-size: 10px; /* Reduce this value to make the text smaller */
+    font-weight: bold;
+}
+.button:hover {
+    background-color: #C5FFF8; /* Change to color when hovered */
+    border-radius: 15px;
+}
+
+.button:active {
+    background-color: #C5FFF8; /* Change to color when clicked */
+    border-radius: 15px;
+}
+.button span {
+    margin-top: 2px; /* Adjust this value to move the text up or down */
+}
+
+.button img {
+    width: 15px;
+    height: 15px;
+    display: block;
+    margin: 0 auto;
+}
+/* Optional: Adjustments for better spacing */
+.main-content {
+    margin-top: 20px;
+}
+
+.footer-buttons {
+    display: flex;
+}
+  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google Font Link for Icons -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+</head>
+
+<body>
+  <header>
+    বেতন
+  </header>
+  <div class="payments">
+    <h2>পরিশোধ</h2>
+    <h1>৳</h1>
+    <h3></h3>
+  </div>
+  <div class="dues">
+    <h2>বকেয়া</h2>
+    <h1>৳</h1>
+    <h3></h3>
+  </div>
+  <div class="others">
+    <h2>অন্যান্য</h2>
+    <h1>৳</h1>
+    <h3></h3>
+  </div>
+  <footer>
+    <div class="buttons">
+      <a class="button" onclick="redirectToPage('profile')">
+        <i class="material-symbols-rounded">person</i>
+        <span>শিক্ষার্থী</span>
+      </a>
+    </div>
+    <div class="buttons">
+      <a class="button" onclick="redirectToPage('attendance')">
+        <i class="material-symbols-rounded">calendar_month</i>
+        <span>উপস্থিতি</span>
+      </a>
+    </div>
+    <div class="buttons">
+      <a class="button" onclick="redirectToPage('fees')">
+        <i class="material-symbols-rounded">payments</i>
+        <span>বেতন</span>
+      </a>
+    </div>
+    <div class="buttons">
+      <a class="button" onclick="redirectToPage('result')">
+        <i class="material-symbols-rounded">award_star</i>
+        <span>ফলাফল</span>
+      </a>
+    </div>
+  </footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Your Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyBhDyy-uWtvbZSnQrCFFubX02CwznIPYp8",
+        authDomain: "bac-2012.firebaseapp.com",
+        projectId: "bac-2012",
+        storageBucket: "bac-2012.appspot.com",
+        messagingSenderId: "1080877923320",
+        appId: "1:1080877923320:web:41d0cfb6b3cb7da530740d",
+        measurementId: "G-75BX9SCCLV"
+      };
+  
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+  
+      function getCurrentUserId() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('userId');
+      }
+  
+      function updateFooterButtons(userId) {
+        const buttons = document.querySelectorAll('.button');
+        buttons.forEach(button => {
+          const category = button.getAttribute('data-category');
+          button.href = `${category}.html?userId=${userId}`;
+        });
+      }
+  
+      function redirectToPage(category) {
+      const userId = getCurrentUserId();
+      if (userId) {
+        const url = `${category}.html?userId=${userId}`;
+        window.location.href = url;
+      } else {
+        // Redirect to different pages based on the category
+        switch (category) {
+          case 'শিক্ষার্থী':
+            window.location.href = 'profile.html';
+            break;
+          case 'উপস্থিতি':
+            window.location.href = 'attendance.html';
+            break;
+          case 'বেতন':
+            window.location.href = 'fees.html';
+            break;
+          case 'ফলাফল':
+            window.location.href = 'results.html';
+            break;
+          default:
+            console.error('Invalid category:', category);
+            // Redirect to a default page or handle as needed
+            window.location.href = 'default.html';
+            break;
+        }
+      }
+    }
+  
+      function updateContainer(containerClass, userId, category) {
+        const container = document.querySelector(`.${containerClass}`);
+  
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth();
+  
+        db.collection("users").doc(userId).collection(category).get()
+          .then((snapshot) => {
+            console.log("Snapshot object:", snapshot);
+  
+            let totalAmount = 0;
+            let monthsWithAmount = [];
+  
+            snapshot.forEach((doc) => {
+              // Extract month name from the document ID
+              const monthName = doc.id.split('/').pop();
+  
+              // Map month name to its index (assuming monthNames array is in Bangla order)
+              const monthIndex = getMonthIndex(monthName);
+  
+              // Check if monthIndex is a valid number
+              if (!isNaN(monthIndex)) {
+                const amount = doc.data().amount || 0;
+  
+                totalAmount += amount;
+  
+                if (amount > 0) {
+                  monthsWithAmount.push(monthIndex);
+                }
+              }
+            });
+  
+            let monthRange = "";
+  
+            if (monthsWithAmount.length > 0) {
+              const startMonthIndex = Math.min(...monthsWithAmount);
+              const endMonthIndex = Math.max(...monthsWithAmount);
+  
+              // Check if startMonthIndex and endMonthIndex are valid numbers
+              if (!isNaN(startMonthIndex) && !isNaN(endMonthIndex)) {
+                const startMonth = getMonthName(startMonthIndex);
+                const endMonth = getMonthName(endMonthIndex);
+  
+                monthRange = startMonth === endMonth ? startMonth : `${startMonth} - ${endMonth}`;
+              } else {
+                console.log("Invalid startMonthIndex or endMonthIndex");
+              }
+            } else {
+              console.log("No months with amounts found.");
+            }
+  
+            console.log("Final month range:", monthRange);
+  
+            container.querySelector('h3').innerText = monthRange;
+  
+            const formattedAmount = `৳${totalAmount}`;
+            container.querySelector('h1').innerText = formattedAmount;
+          })
+          .catch((error) => {
+            console.log("Error getting documents: ", error);
+          });
+      }
+  
+      function getMonthIndex(monthName) {
+        const monthNames = [
+          "জানুয়ারি",
+          "ফেব্রুয়ারি",
+          "মার্চ",
+          "এপ্রিল",
+          "মে",
+          "জুন",
+          "জুলাই",
+          "আগস্ট",
+          "সেপ্টেম্বর",
+          "অক্টোবর",
+          "নভেম্বর",
+          "ডিসেম্বর"
+        ];
+  
+        return monthNames.indexOf(monthName);
+      }
+  
+      function getMonthName(monthIndex) {
+        const monthNames = [
+          "জানুয়ারি",
+          "ফেব্রুয়ারি",
+          "মার্চ",
+          "এপ্রিল",
+          "মে",
+          "জুন",
+          "জুলাই",
+          "আগস্ট",
+          "সেপ্টেম্বর",
+          "অক্টোবর",
+          "নভেম্বর",
+          "ডিসেম্বর"
+        ];
+  
+        const indexInRange = Math.max(0, Math.min(monthIndex, monthNames.length - 1));
+        return monthNames[indexInRange];
+      }
+  
+      const userId = getCurrentUserId();
+      if (userId) {
+        updateFooterButtons(userId);
+        updateContainer("payments", userId, "payments");
+        // Add similar calls for "dues" and "others" containers
+      } else {
+        console.error('User ID not found.');
+      }
+    });
+  </script>  
+</body>
+</html>

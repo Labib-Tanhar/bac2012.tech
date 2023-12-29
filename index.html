@@ -1,1 +1,224 @@
-<h1>This is a preview page for domain setup</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BAC</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon"> <!-- Add this line for the favicon -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400&family=Noto+Sans+Bengali&display=swap');
+
+        body {
+            font-family: 'Comfortaa', sans-serif;
+            font-family: 'Noto Sans Bengali', sans-serif;
+            background-color: #fff;
+            color: #333;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        #loading-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            justify-content: center;
+            z-index: 9999;
+            align-items: center;
+            text-align: center;
+        }
+
+        #loading-photo {
+            max-width: 50%;
+            height: 100px;
+        }
+
+        .login-container {
+            max-width: 400px;
+            padding: 20px;
+            border: 2px solid #E8DEF8;
+            border-radius: 12px;
+            text-align: left;
+        }
+
+        .logo-container img {
+            max-width: 20%;
+            height: auto;
+        }
+
+        .message-text {
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 8px;
+        }
+
+        input {
+            padding: 10px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 2px solid #E8DEF8;
+            border-radius: 10px;
+            color: #333;
+        }
+
+        input:focus::placeholder {
+            color: transparent;
+        }
+
+        button {
+            background-color: #E8DEF8;
+            color: #333;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        button:hover {
+            background-color: #E8DEF8;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        #togglePassword {
+            color: #E8DEF8;
+            position: absolute;
+            right: -6px;
+            top: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="loading-container">
+        <img id="loading-photo" src="https://scontent.fspd5-1.fna.fbcdn.net/v/t39.30808-6/306438470_511299084333194_2890613859730265256_n.png?_nc_cat=101&ccb=1-7&_nc_sid=efb6e6&_nc_eui2=AeG09gmRlR4qA6JGxPEhBE2MYP6Abw_pfp5g_oBvD-l-nrsc-HBwlH4543-WWk0XnBrBvFVtiUzameu_pMguVLuO&_nc_ohc=mBSmHMz9RysAX8J4zYX&_nc_ht=scontent.fspd5-1.fna&cb_e2o_trans=q&oh=00_AfA7KwNRC9YL1Tx82bXfB3HPmbZ-tIbZURJwmGRSjmKT2g&oe=6592F33A" alt="Loading">
+    </div>
+
+    <div class="login-container">
+        <div class="logo-container">
+            <h2>স্বাগতম</h2>
+        </div>
+        <div class="message-text">
+            <p>প্রবেশ করতে নিচের ফরমটি পূরণ করি</p>
+        </div>
+        <form id="login-form" novalidate>
+            <label for="userID"></label>
+            <input type="text" id="userID" name="userID" required placeholder="User ID" autocomplete="username">
+        
+            <div class="password-container">
+                <label for="password"></label>
+                <input type="password" id="password" name="password" required placeholder="Password" autocomplete="current-password">
+                <i id="togglePassword" class="material-symbols-rounded">visibility</i>
+            </div>
+            <button type="submit">প্রবেশ</button>
+        </form>        
+        <p id="error-message" class="error-message"></p>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+    <script>
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
+
+        togglePassword.addEventListener('click', function (e) {
+            // toggle the type attribute
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            // toggle the eye slash icon
+            this.textContent = this.textContent === 'visibility' ? 'visibility_off' : 'visibility';
+        });
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBhDyy-uWtvbZSnQrCFFubX02CwznIPYp8",
+            authDomain: "bac-2012.firebaseapp.com",
+            projectId: "bac-2012",
+            storageBucket: "bac-2012.appspot.com",
+            messagingSenderId: "1080877923320",
+            appId: "1:1080877923320:web:fcd3b6a920f0cf0330740d",
+            measurementId: "G-VMFJXLEFYQ"
+        };
+
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        const loginForm = document.getElementById('login-form');
+
+        function showError(message) {
+    console.error(message);
+    alert(message);
+}
+
+loginForm.addEventListener('submit', async function (event) {
+    event.preventDefault();
+
+    const userID = loginForm.userID.value;
+    const password = loginForm.password.value;
+
+    try {
+        // Fetch user data from Firestore
+        const doc = await db.doc(`users/${userID}`).get();
+
+        if (!doc.exists) {
+            showError('No such user!');
+        } else {
+            const userData = doc.data();
+            const storedPassword = userData.password;
+
+            console.log('Entered password:', password);
+            console.log('Stored password:', storedPassword);
+
+            // Convert both passwords to strings before comparing them
+            if (String(password) !== String(storedPassword)) {
+                showError('পাসওয়ার্ডটি সঠিক নয়');
+            } else {
+                console.log('User logged in:', userData);
+                // User is logged in, redirect to the main app
+                window.location.href = "profile.html?userId=" + userID;
+            }
+        }
+    } catch (error) {
+        console.error(error.message);
+        showError(error.message);
+    }
+});
+
+        // Display loading screen
+        document.getElementById('loading-container').style.display = 'flex';
+
+        // Hide loading screen after some time (replace 2000 with the desired delay in milliseconds)
+        setTimeout(function() {
+            document.getElementById('loading-container').style.display = 'none';
+        }, 2000);
+    </script>
+</body>
+</html>
